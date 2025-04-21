@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClient,
-  HttpClientModule,
-} from '@angular/common/http';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { FooterComponent } from './shared/footer/footer.component';
+import { AuthService } from './core/services/auth.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HttpClientModule],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -18,18 +17,17 @@ export class AppComponent implements OnInit {
   /**
    *
    */
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _authService: AuthService) {}
+
+  setCurrentUser() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    const user: any = jwtDecode(token);
+    console.log(user);
+    this._authService.currentUser.set(user);
+  }
+
   ngOnInit(): void {
-    this._httpClient.get('https://localhost:7120/api/Account/users').subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-        console.log('Request Completed');
-      },
-    });
+    this.setCurrentUser();
   }
 }
