@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from '../register/register.component';
 
 @Component({
   selector: 'app-home',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [RegisterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -19,8 +19,7 @@ export class HomeComponent {
     this.registerMode = !this.registerMode;
   }
 
-  register(): void {}
-
-  cancel(): void {}
-
+  cancelRegisterMode(event: boolean) {
+    this.registerMode = event; // Expecting a boolean value
+  }
 }
