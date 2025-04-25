@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout/auth-layout.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -8,6 +9,7 @@ export const routes: Routes = [
       import('./layouts/blank-layout/blank-layout/blank-layout.component').then(
         (m) => m.BlankLayoutComponent
       ),
+
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       {
@@ -17,6 +19,49 @@ export const routes: Routes = [
             (m) => m.HomeComponent
           ),
         title: 'Home',
+      },
+      {
+        path: 'members',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./components/members/member-list/member-list.component').then(
+            (m) => m.MemberListComponent
+          ),
+        title: 'Members',
+      },
+      {
+        path: 'members/:id',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import(
+            './components/members/member-details/member-details.component'
+          ).then((m) => m.MemberDetailsComponent),
+      },
+      {
+        path: 'messages',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./components/messages/messages.component').then(
+            (m) => m.MessagesComponent
+          ),
+        title: 'Messages',
+      },
+      {
+        path: 'lists',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./components/lists/lists.component').then(
+            (m) => m.ListsComponent
+          ),
+        title: 'Lists',
+      },
+      {
+        path: '**',
+        loadComponent: () =>
+          import('./components/home/home.component').then(
+            (m) => m.HomeComponent
+          ),
+        pathMatch: 'full',
       },
     ],
   },

@@ -13,19 +13,34 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
-      @if (loggedIn) {
       <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        @if (loggedIn) {
         <li class="nav-item">
-          <a class="nav-link active" href="#" aria-current="page">Matches</a>
+          <a
+            class="nav-link"
+            routerLink="/members"
+            routerLinkActive="active"
+            aria-current="page"
+            >Matches</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Lists</a>
+          <a
+            class="nav-link"
+            routerLink="/lists"
+            routerLinkActive="router-link-active"
+            >Lists</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Messages</a>
+          <a class="nav-link" routerLink="/messages" routerLinkActive="active"
+            >Messages</a
+          >
         </li>
+        }
       </ul>
-      } @if(loggedIn) {
+
+      @if(loggedIn) {
 
       <div class="btn-group" dropdown>
         <a

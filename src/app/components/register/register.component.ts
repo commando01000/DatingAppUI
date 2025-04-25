@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-register',
   imports: [ReactiveFormsModule, FormsModule],
@@ -19,7 +20,7 @@ export class RegisterComponent {
   /**
    *
    */
-  constructor(private _authService: AuthService, private _router: Router) {}
+  constructor(private _authService: AuthService, private _router: Router, private _toastr: ToastrService) {}
 
   @Output() registerModee = new EventEmitter<boolean>(); // Emit a boolean value
 
@@ -69,6 +70,7 @@ export class RegisterComponent {
       },
       error: (error) => {
         console.log(error);
+        this._toastr.error(error.error.title);
       },
       complete: () => {
         console.log('Request Completed');

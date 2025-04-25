@@ -8,10 +8,18 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
-  imports: [ReactiveFormsModule, FormsModule, BsDropdownModule],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    BsDropdownModule,
+    RouterLink,
+    RouterLinkActive,
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
@@ -19,7 +27,11 @@ export class NavbarComponent implements OnInit {
   /**
    *
    */
-  constructor(private _authService: AuthService) {}
+  constructor(
+    private _authService: AuthService,
+    private _router: Router,
+    private _toastr: ToastrService
+  ) {}
   ngOnInit(): void {
     this._authService.currentUser() != null
       ? (this.loggedIn = true)
@@ -47,9 +59,12 @@ export class NavbarComponent implements OnInit {
       next: (response) => {
         console.log(response);
         this.loggedIn = true;
+        this.loginForm.reset();
+        this._router.navigate(['/members']);
       },
       error: (error) => {
         console.log(error);
+        this._toastr.error( error.error.title);
       },
       complete: () => {
         console.log('Request Completed');
