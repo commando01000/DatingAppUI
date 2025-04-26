@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
   <div class="container">
     <a class="navbar-brand" href="#">Dating App</a>
     <button
@@ -50,7 +50,7 @@
           class="dropdown-toggle text-light"
           aria-controls="dropdown-animated"
         >
-          Welcome User
+          Welcome {{ user?.unique_name | titlecase }}
         </a>
         <ul
           id="dropdown-animated"
@@ -87,7 +87,7 @@
           type="password"
           placeholder="Password"
         />
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+        <button class="btn btn-success my-2 my-sm-0" type="submit">
           Login
         </button>
       </form>

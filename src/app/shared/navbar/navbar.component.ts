@@ -10,6 +10,8 @@ import { AuthService } from '../../core/services/auth.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { IUser } from '../../interfaces/IUser';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -19,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
     BsDropdownModule,
     RouterLink,
     RouterLinkActive,
+    TitleCasePipe,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
@@ -32,10 +35,16 @@ export class NavbarComponent implements OnInit {
     private _router: Router,
     private _toastr: ToastrService
   ) {}
+
+  user: IUser | null = null;
   ngOnInit(): void {
-    this._authService.currentUser() != null
-      ? (this.loggedIn = true)
-      : (this.loggedIn = false);
+    if (this._authService.currentUser() != null) {
+      this.loggedIn = true;
+      // get user name
+      this.user = this._authService.currentUser();
+    } else {
+      this.loggedIn = false;
+    }
   }
 
   loggedIn: boolean = false;
@@ -64,7 +73,7 @@ export class NavbarComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-        this._toastr.error( error.error.title);
+        this._toastr.error(error.error.title);
       },
       complete: () => {
         console.log('Request Completed');
