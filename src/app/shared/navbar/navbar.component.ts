@@ -10,7 +10,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { IUser } from '../../interfaces/IUser';
+import { User } from '../../interfaces/user';
 import { TitleCasePipe } from '@angular/common';
 
 @Component({
@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
     private _toastr: ToastrService
   ) {}
 
-  user: IUser | null = null;
+  user: User | null = null;
   ngOnInit(): void {
     if (this._authService.currentUser() != null) {
       this.loggedIn = true;
@@ -68,6 +68,8 @@ export class NavbarComponent implements OnInit {
       next: (response) => {
         console.log(response);
         this.loggedIn = true;
+        // get user name
+        this.user = this._authService.currentUser();
         this.loginForm.reset();
         this._router.navigate(['/members']);
       },

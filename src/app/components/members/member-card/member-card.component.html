@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-img-wrapper">
+    <img class="img-fluid" [src]="member?.photoUrl" [alt]="member?.displayName" />
+  </div>
+  <div class="card-body p-1">
+    <h6 class="card-title text-center mb-1">
+      <i class="fa fa-user me-2"></i>
+      {{ member?.displayName }}
+    </h6>
+    <p class="card-text text-muted text-center">{{ member?.address?.city }}</p>
+  </div>
+</div>
