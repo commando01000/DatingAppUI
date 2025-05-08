@@ -8,6 +8,8 @@ export interface Member {
   token: any;
   displayName: string;
   bio: string;
+  dateOfBirth: string
+  lastActive: string
   gender: string;
   interests: string;
   lookingFor: string;

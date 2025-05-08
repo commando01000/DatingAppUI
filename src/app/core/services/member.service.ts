@@ -17,4 +17,7 @@ export class MemberService {
   getMembersByGender(gender: string): Observable<any> {
     return this._httpClient.get(this.baseUrl + '/members?gender=' + gender);
   }
+  getMemberById(id: string): Observable<any> {
+    return this._httpClient.get(this.baseUrl + '/Members/members?id=' + id);
+  }
 }
