@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout/auth-layout.component';
 import { authGuard } from './guards/auth.guard';
+import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,14 @@ export const routes: Routes = [
           import(
             './components/members/member-details/member-details.component'
           ).then((m) => m.MemberDetailsComponent),
+      },
+      {
+        path: 'members/:id/edit',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./components/members/member-edit/member-edit.component').then(
+            (m) => m.MemberEditComponent
+          ),
       },
       {
         path: 'messages',

@@ -1,5 +1,5 @@
-import { Address } from "./address";
-import { Photo } from "./photo";
+import { Address } from './address';
+import { Photo } from './photo';
 
 export interface Member {
   id: string;
@@ -8,8 +8,8 @@ export interface Member {
   token: any;
   displayName: string;
   bio: string;
-  dateOfBirth: string
-  lastActive: string
+  dateOfBirth: string;
+  lastActive: string;
   gender: string;
   interests: string;
   lookingFor: string;

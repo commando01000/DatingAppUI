@@ -1,0 +1,114 @@
+@if(member) {
+<div class="row">
+  <div class="col-4">
+    <h1>Your Profile</h1>
+  </div>
+  <div class="col-8">
+    <div class="alert alert-info">
+      <p>
+        <strong>Important:</strong> You have made changes. Any unsaved changes
+        will be lost
+      </p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <img
+        class="card-img img-thumbnail"
+        src="{{ member.photoUrl }}"
+        [alt]="member.displayName"
+      />
+      <div class="card-body">
+        <div>
+          <strong>Location:</strong>
+          <p>{{ member.address?.city }}, {{ member.address?.street }}</p>
+        </div>
+
+        <div>
+          <strong>Age:</strong>
+          <p>{{ member.age }}</p>
+        </div>
+
+        <div>
+          <strong>Last Active:</strong>
+          <!-- Pipe for date -->
+          <p>{{ member.lastActive | dateFormat }}</p>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary col-12">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-8">
+    <tabset class="member-tabset">
+      <tab heading="About {{ member.displayName }}">
+        <form
+          [formGroup]="editProfileForm"
+          (ngSubmit)="Edit()"
+          autocomplete="on"
+        >
+          <h4 class="mt-2">Bio</h4>
+          <textarea
+            name="bio"
+            formControlName="bio"
+            id="bio"
+            class="form-control"
+            rows="6"
+          >
+          </textarea>
+          <h4 class="mt-2">Looking For</h4>
+          <textarea
+            name="lookingFor"
+            formControlName="lookingFor"
+            id="lookingFor"
+            class="form-control"
+            rows="6"
+          ></textarea>
+          <h4 class="mt-2">Interests</h4>
+          <textarea
+            name="interests"
+            id="interests"
+            formControlName="interests"
+            class="form-control"
+            rows="6"
+            ></textarea
+          >
+
+          <div class="d-flex mt-2 pt-2 align-items-center">
+            <label for="city">City: </label>
+            <input
+              type="text"
+              id="city"
+              formControlName="city"
+              class="form-control"
+              name="city"
+            />
+
+            <label for="street">Street: </label>
+            <input
+              type="text"
+              id="street"
+              formControlName="street"
+              class="form-control"
+              name="street"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary col-12 mt-2">
+            Save Changes
+          </button>
+        </form>
+      </tab>
+
+      <tab heading="Edit Photos">
+        <gallery
+          thumbPosition="bottom"
+          class="gallery"
+          [items]="Images"
+        ></gallery>
+      </tab>
+    </tabset>
+  </div>
+</div>
+}

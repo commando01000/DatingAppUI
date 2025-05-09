@@ -4,8 +4,8 @@
     <div class="card">
       <img
         class="card-img img-thumbnail"
-        src="{{ member?.photoUrl }}"
-        [alt]="member?.displayName"
+        src="{{ member.photoUrl }}"
+        [alt]="member.displayName"
       />
       <div class="card-body">
         <div>
@@ -20,7 +20,8 @@
 
         <div>
           <strong>Last Active:</strong>
-          <p>{{ member.lastActive }}</p>
+          <!-- Pipe for date -->
+          <p>{{ member.lastActive | dateFormat }}</p>
         </div>
       </div>
       <div class="card-footer">
@@ -32,26 +33,31 @@
     </div>
   </div>
 
-  <!-- <div class="col-8">
+  <div class="col-8">
     <tabset class="member-tabset">
-      <tab heading="About {{ member?.displayName }}">
-        <h4>Description</h4>
-        <p>{{ member?.description }}</p>
+      <tab heading="About {{ member.displayName }}">
+        <h4>Bio</h4>
+        <p>{{ member.bio }}</p>
+      </tab>
+      <tab heading="Looking For">
+        <h4>Looking For</h4>
+        <p>{{ member.lookingFor }}</p>
       </tab>
       <tab heading="Interests">
         <h4>Interests</h4>
-        <p>{{ member?.interests }}</p>
+        <p>{{ member.interests }}</p>
       </tab>
       <tab heading="Photos">
-        <ngx-gallery
-          [options]="galleryOptions"
-          [images]="galleryImages"
-        ></ngx-gallery>
+        <gallery
+          thumbPosition="bottom"
+          class="gallery"
+          [items]="Images"
+        ></gallery>
       </tab>
       <tab heading="Messages">
         <p>Messages will go here</p>
       </tab>
     </tabset>
-  </div> -->
+  </div>
 </div>
 }

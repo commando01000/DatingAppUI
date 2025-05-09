@@ -59,7 +59,11 @@
           role="menu"
           aria-labelledby="button-animated"
         >
-          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li>
+            <a routerLink="/members/{{ user?.Id }}/edit" class="dropdown-item"
+              >Profile</a
+            >
+          </li>
 
           <div class="dropdown-divider"></div>
 
