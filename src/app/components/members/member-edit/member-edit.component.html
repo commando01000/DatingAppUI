@@ -4,12 +4,15 @@
     <h1>Your Profile</h1>
   </div>
   <div class="col-8">
+    @if (editProfileForm.dirty) {
+
     <div class="alert alert-info">
       <p>
         <strong>Important:</strong> You have made changes. Any unsaved changes
         will be lost
       </p>
     </div>
+    }
   </div>
   <div class="col-4">
     <div class="card">
@@ -35,9 +38,6 @@
           <p>{{ member.lastActive | dateFormat }}</p>
         </div>
       </div>
-      <div class="card-footer">
-        <button class="btn btn-primary col-12">Save Changes</button>
-      </div>
     </div>
   </div>
 
@@ -52,7 +52,7 @@
           <h4 class="mt-2">Bio</h4>
           <textarea
             name="bio"
-            formControlName="bio"
+            formControlName="Bio"
             id="bio"
             class="form-control"
             rows="6"
@@ -61,7 +61,7 @@
           <h4 class="mt-2">Looking For</h4>
           <textarea
             name="lookingFor"
-            formControlName="lookingFor"
+            formControlName="LookingFor"
             id="lookingFor"
             class="form-control"
             rows="6"
@@ -70,18 +70,21 @@
           <textarea
             name="interests"
             id="interests"
-            formControlName="interests"
+            formControlName="Interests"
             class="form-control"
             rows="6"
-            ></textarea
-          >
+          ></textarea>
 
-          <div class="d-flex mt-2 pt-2 align-items-center">
+          <h4 class="mt-2">Location Details:</h4>
+          <div
+            [formGroupName]="'Address'"
+            class="d-flex mt-2 pt-2 align-items-center"
+          >
             <label for="city">City: </label>
             <input
               type="text"
               id="city"
-              formControlName="city"
+              formControlName="City"
               class="form-control"
               name="city"
             />
@@ -90,13 +93,18 @@
             <input
               type="text"
               id="street"
-              formControlName="street"
+              formControlName="Street"
               class="form-control"
               name="street"
             />
           </div>
-          <button type="submit" class="btn btn-primary col-12 mt-2">
+          <button
+            [disabled]="!editProfileForm.dirty"
+            type="submit"
+            class="btn btn-primary col-12 mt-3"
+          >
             Save Changes
+            <span class="spinner-border d-none spinner-border-sm"></span>
           </button>
         </form>
       </tab>

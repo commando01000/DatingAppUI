@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -33,7 +33,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private _authService: AuthService,
     private _router: Router,
-    private _toastr: ToastrService
+    private _toastr: ToastrService,
+    private _renderer2: Renderer2
   ) {}
 
   user: User | null = null;
@@ -64,6 +65,11 @@ export class NavbarComponent implements OnInit {
   Login(): void {
     console.log(this.loginForm.value);
 
+    // display the spinner and remove the d-none
+    const spinner = this._renderer2.selectRootElement('.spinner-border');
+    spinner.classList.remove('d-none');
+    spinner.classList.add('d-block');
+
     this._authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         console.log(response);
@@ -71,6 +77,10 @@ export class NavbarComponent implements OnInit {
         // get user name
         this.user = this._authService.currentUser();
         this.loginForm.reset();
+
+        spinner.classList.remove('d-block');
+        spinner.classList.add('d-none');
+
         this._router.navigate(['/members']);
       },
       error: (error) => {
@@ -79,6 +89,8 @@ export class NavbarComponent implements OnInit {
       },
       complete: () => {
         console.log('Request Completed');
+        spinner.classList.remove('d-block');
+        spinner.classList.add('d-none');
       },
     });
   }
