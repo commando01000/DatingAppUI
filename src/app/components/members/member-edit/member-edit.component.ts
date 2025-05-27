@@ -4,7 +4,7 @@ import { MemberService } from '../../../core/services/member.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
-import { DateFormatPipe } from '../../../pipes/date-format.pipe';
+import { DateFormatPipe } from '../../../core/pipes/date-format.pipe';
 import {
   FormControl,
   FormGroup,

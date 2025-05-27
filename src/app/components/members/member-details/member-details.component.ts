@@ -3,7 +3,7 @@ import { MemberService } from '../../../core/services/member.service';
 import { ActivatedRoute } from '@angular/router';
 import { Member } from '../../../interfaces/member';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { DateFormatPipe } from '../../../pipes/date-format.pipe';
+import { DateFormatPipe } from '../../../core/pipes/date-format.pipe';
 import { GalleryModule, GalleryItem, ImageItem } from 'ng-gallery';
 
 @Component({

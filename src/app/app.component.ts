@@ -4,10 +4,10 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { AuthService } from './core/services/auth.service';
 import { jwtDecode } from 'jwt-decode';
-
+import { NgxSpinnerComponent } from 'ngx-spinner';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NgxSpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
