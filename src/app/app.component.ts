@@ -5,6 +5,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { AuthService } from './core/services/auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { NgxSpinnerComponent } from 'ngx-spinner';
+import { User } from './interfaces/user';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NgxSpinnerComponent],
@@ -22,7 +23,8 @@ export class AppComponent implements OnInit {
   setCurrentUser() {
     const token = localStorage.getItem('token');
     if (!token) return;
-    const user: any = jwtDecode(token);
+    const user: User = jwtDecode(token);
+    user.token = token;
     this._authService.currentUser.set(user);
   }
 

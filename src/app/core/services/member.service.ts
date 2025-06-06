@@ -28,4 +28,15 @@ export class MemberService {
   updateMember(member: FormGroup): Observable<any> {
     return this._httpClient.put(this.baseUrl + '/Members/update', member);
   }
+
+  setMainPhoto(photoId: number) : Observable<any> {
+    return this._httpClient.put(
+      this.baseUrl + '/Members/SetMainPhoto?photoId=' + photoId,
+      {}
+    );
+  }
+
+  deletePhoto(publicId: string): Observable<any> {
+    return this._httpClient.delete(this.baseUrl + '/Members/DeletePhoto?publicId=' + publicId);
+  }
 }

@@ -12,10 +12,17 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { PhotoEditorComponent } from '../photo-editor/photo-editor.component';
 
 @Component({
   selector: 'app-member-edit',
-  imports: [TabsModule, DateFormatPipe, GalleryModule, ReactiveFormsModule],
+  imports: [
+    TabsModule,
+    DateFormatPipe,
+    GalleryModule,
+    ReactiveFormsModule,
+    PhotoEditorComponent,
+  ],
   templateUrl: './member-edit.component.html',
   styleUrl: './member-edit.component.scss',
 })
@@ -108,5 +115,9 @@ export class MemberEditComponent implements OnInit {
         spinner.classList.add('d-none');
       },
     });
+  }
+
+  onMemberChange(member: Member) {
+    this.member = member;
   }
 }

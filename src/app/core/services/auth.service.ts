@@ -21,6 +21,7 @@ export class AuthService {
         const user = response;
         if (user) {
           var decodedUser = jwtDecode(user.token) as User;
+          decodedUser.token = user.token;
           this.currentUser.set(decodedUser);
           localStorage.setItem('token', user.token);
         }
