@@ -91,7 +91,6 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   initializeUploader() {
-    debugger;
     this.uploader = new FileUploader({
       url: this.baseUrl + '/Members/AddPhoto',
       authToken: 'Bearer ' + this._authService.currentUser()?.token,

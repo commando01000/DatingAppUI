@@ -57,7 +57,7 @@ export class RegisterComponent {
 
   matchPasswords(formGroup: FormGroup) {
     const password = formGroup.get('password')?.value;
-    const confirmPassword = formGroup.get('confirmPassword')?.value;
+    const confirmPassword = formGroup.get('RePassword')?.value;
     return password === confirmPassword ? null : { notSame: true };
   }
 

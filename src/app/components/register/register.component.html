@@ -1,48 +1,102 @@
 <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr />
-  <div class="form-group">
-    <label for="username">username</label>
+  <div class="form-floating">
     <input
       type="text"
       formControlName="username"
-      class="form-control"
+      class="form-control {{ registerForm.get('username')?.errors && registerForm.get('username')?.touched ? 'is-invalid' : '' }}"
       name="username"
     />
+    <label for="username">Username</label>
+    @if (registerForm.get('username')?.touched &&
+    registerForm.get('username')?.invalid) {
+    <div class="text-danger">
+      @if (registerForm.get('username')?.errors?.['required']) {
+      <div>Username is required</div>
+      } @if (registerForm.get('username')?.errors?.['minlength']) {
+      <div>Minimum 4 characters required</div>
+      } @if (registerForm.get('username')?.errors?.['maxlength']) {
+      <div>Maximum 30 characters allowed</div>
+      }
+    </div>
+    }
   </div>
-  <hr />
-  <div class="form-group">
+
+
+  <div class="form-floating mt-2">
     <label for="email">Email</label>
     <input
       type="email"
       formControlName="email"
-      class="form-control"
+      class="form-control {{ registerForm.get('email')?.errors && registerForm.get('email')?.touched ? 'is-invalid' : '' }}"
       name="email"
     />
+    @if (registerForm.get('email')?.touched &&
+    registerForm.get('email')?.invalid) {
+    <div class="text-danger">
+      @if (registerForm.get('email')?.errors?.['required']) {
+      <div>Email is required</div>
+      } @if (registerForm.get('email')?.errors?.['email']) {
+      <div>Invalid email format</div>
+      }
+    </div>
+    }
   </div>
-  <div class="form-group">
+
+  <div class="form-floating mt-2">
     <label for="password">Password</label>
     <input
       type="password"
       formControlName="password"
-      class="form-control"
+      class="form-control {{ registerForm.get('password')?.errors && registerForm.get('password')?.touched ? 'is-invalid' : '' }}"
       name="password"
     />
+    @if (registerForm.get('password')?.touched &&
+    registerForm.get('password')?.invalid) {
+    <div class="text-danger">
+      @if (registerForm.get('password')?.errors?.['required']) {
+      <div>Password is required</div>
+      } @if (registerForm.get('password')?.errors?.['minlength']) {
+      <div>Minimum 8 characters required</div>
+      } @if (registerForm.get('password')?.errors?.['maxlength']) {
+      <div>Maximum 30 characters allowed</div>
+      } @if (registerForm.get('password')?.errors?.['pattern']) {
+      <div>
+        Password must contain uppercase, lowercase, number, and special
+        character
+      </div>
+      }
+    </div>
+    }
   </div>
+
   <!-- RePassword -->
-  <div class="form-group">
+  <div class="form-floating mt-2">
     <label for="RePassword">Confirm Password</label>
     <input
       type="password"
       formControlName="RePassword"
-      class="form-control"
+      class="form-control {{ registerForm.get('RePassword')?.errors && registerForm.get('RePassword')?.touched ? 'is-invalid' : '' }}"
       name="RePassword"
     />
+    @if (registerForm.get('RePassword')?.touched &&
+    registerForm.get('RePassword')?.invalid) {
+    <div class="text-danger">
+      @if (registerForm.get('RePassword')?.errors?.['required']) {
+      <div>Confirm password is required</div>
+      } @if (registerForm.get('RePassword')?.errors?.['pattern']) {
+      <div>Confirm password must meet password policy</div>
+      }
+    </div>
+    } @if (registerForm.errors?.['notSame'] &&
+    registerForm.get('RePassword')?.touched) {
+    <div class="text-danger">Passwords do not match</div>
+    }
   </div>
+
   <div class="form-group mt-3 text-center">
-    <button class="btn btn-success me-2" type="submit">
-      Register
-    </button>
+    <button class="btn btn-success me-2" type="submit">Register</button>
     <button class="btn btn-default me-2" (click)="cancel()" type="submit">
       Cancel
     </button>
