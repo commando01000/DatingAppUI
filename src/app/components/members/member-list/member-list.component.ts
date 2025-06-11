@@ -2,39 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { MemberService } from '../../../core/services/member.service';
 import { Member } from '../../../interfaces/member';
 import { MemberCardComponent } from '../member-card/member-card.component';
+import { PaginatedResult } from '../../../interfaces/Pagination';
 
 @Component({
   selector: 'app-member-list',
-  imports: [ MemberCardComponent],
+  imports: [MemberCardComponent],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
 })
 export class MemberListComponent implements OnInit {
-  /**
-   *
-   */
   constructor(private _MemberService: MemberService) {}
-  ngOnInit(): void {
-    this.loadMembers();
+
+  get members() {
+    return this._MemberService.paginatedResults();
   }
 
-  members : Member[] = [];
-
-  loadMembers() {
-    this._MemberService.getMembers().subscribe({
-      next: (response) => {
-        if(response.status)
-        {
-          this.members = response.data.items;
-        }
-        console.log(response);
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-        console.log('Request Completed');
-      },
-    });
+  ngOnInit(): void {
+    // Trigger loading only
+    if (!this.members.items?.length) {
+      this._MemberService.getMembers();
+    }
   }
 }
