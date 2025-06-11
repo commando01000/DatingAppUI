@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment.development';
 import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { Member } from '../../interfaces/member';
-import { PaginatedResult } from '../../interfaces/Pagination';
+import { PaginatedResult } from '../../interfaces/pagination';
 
 @Injectable({
   providedIn: 'root',

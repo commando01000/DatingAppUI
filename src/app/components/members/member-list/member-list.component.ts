@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MemberService } from '../../../core/services/member.service';
-import { Member } from '../../../interfaces/member';
 import { MemberCardComponent } from '../member-card/member-card.component';
-import { PaginatedResult } from '../../../interfaces/Pagination';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @Component({
   selector: 'app-member-list',
-  imports: [MemberCardComponent],
+  imports: [MemberCardComponent, PaginationModule],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
 })
 export class MemberListComponent implements OnInit {
   constructor(private _MemberService: MemberService) {}
+
+  currentPage: number = 4;
+  page?: number;
 
   get members() {
     return this._MemberService.paginatedResults();
@@ -22,5 +24,9 @@ export class MemberListComponent implements OnInit {
     if (!this.members.items?.length) {
       this._MemberService.getMembers();
     }
+  }
+
+  pageChanged(event: any) {
+    this._MemberService.getMembers(event.page, event.itemsPerPage);
   }
 }
