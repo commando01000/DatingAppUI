@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { Member } from '../../interfaces/member';
 import { PaginatedResult } from '../../interfaces/pagination';
+import { UserParams } from '../../interfaces/user-params';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +20,31 @@ export class MemberService {
 
   // members = signal<Member[]>([]); used paginated result instead !
 
-  getMembers(pageNumber: number = 1, pageSize: number = 5) {
+  getMembers(userParams?: UserParams) {
     let params = new URLSearchParams();
-    if (pageNumber != null && pageSize != null) {
-      params.set('PageIndex', pageNumber.toString());
-      params.set('PageSize', pageSize.toString());
+    if (userParams?.pageNumber != null && userParams?.pageSize != null) {
+      params.set('PageIndex', userParams.pageNumber.toString());
+      params.set('PageSize', userParams.pageSize.toString());
     }
+
+    if (userParams?.gender != null) {
+      params.set('Gender', userParams.gender);
+    }
+
+    if (userParams?.gender === '') {
+      params.set('Gender', '');
+    }
+
+    if (userParams?.minAge != null) {
+      params.set('MinAge', userParams.minAge.toString());
+    }
+    if (userParams?.maxAge != null) {
+      params.set('MaxAge', userParams.maxAge.toString());
+    }
+    if (userParams?.orderBy != null) {
+      params.set('OrderBy', userParams.orderBy);
+    }
+
     this._httpClient
       .get(this.baseUrl + '/Members/members?' + params)
       .subscribe({

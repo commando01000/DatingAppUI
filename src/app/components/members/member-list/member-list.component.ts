@@ -2,22 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { MemberService } from '../../../core/services/member.service';
 import { MemberCardComponent } from '../member-card/member-card.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { FormsModule } from '@angular/forms';
+import { UserParams } from '../../../interfaces/user-params';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 @Component({
   selector: 'app-member-list',
-  imports: [MemberCardComponent, PaginationModule],
+  imports: [MemberCardComponent, PaginationModule, FormsModule, ButtonsModule],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
 })
 export class MemberListComponent implements OnInit {
   constructor(private _MemberService: MemberService) {}
 
-  currentPage: number = 4;
-  page?: number;
+  userParams: UserParams = new UserParams();
 
-  get members() {
-    return this._MemberService.paginatedResults();
-  }
+  radioModel = 'Middle';
+
+  genderList = [
+    { value: 'male', display: 'Males' },
+    { value: 'female', display: 'Females' },
+    { value: '', display: 'All' },
+  ];
 
   ngOnInit(): void {
     // Trigger loading only
@@ -26,7 +32,22 @@ export class MemberListComponent implements OnInit {
     }
   }
 
+  get members() {
+    return this._MemberService.paginatedResults();
+  }
+
+  resetFilters() {
+    this._MemberService.getMembers();
+  }
+
+  loadMembers() {
+    this._MemberService.getMembers(this.userParams);
+  }
+
   pageChanged(event: any) {
-    this._MemberService.getMembers(event.page, event.itemsPerPage);
+    this.userParams.pageNumber = event.page;
+    this.userParams.pageSize = event.itemsPerPage;
+
+    this._MemberService.getMembers(this.userParams);
   }
 }
