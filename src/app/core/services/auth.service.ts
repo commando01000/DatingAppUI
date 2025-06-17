@@ -5,12 +5,16 @@ import { FormGroup } from '@angular/forms';
 import { environment } from '../../../environments/environment.development';
 import { User } from '../../interfaces/user';
 import { jwtDecode } from 'jwt-decode';
+import { LikedService } from './liked.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private _httpClient: HttpClient) {}
+  constructor(
+    private _httpClient: HttpClient,
+    private _likedService: LikedService
+  ) {}
 
   currentUser = signal<User | null>(null);
 
@@ -20,14 +24,20 @@ export class AuthService {
       map((response: any) => {
         const user = response;
         if (user) {
-          var decodedUser = jwtDecode(user.token) as User;
-          decodedUser.token = user.token;
-          this.currentUser.set(decodedUser);
-          localStorage.setItem('token', user.token);
+          let CurrentUser = user;
+          this.setCurrentUser(CurrentUser);
         }
         return user;
       })
     );
+  }
+
+  setCurrentUser(user: User) {
+    var decodedUser = jwtDecode(user.token) as User;
+    decodedUser.token = user.token;
+    this.currentUser.set(decodedUser);
+    localStorage.setItem('token', user.token);
+    this._likedService.getLikeIds();
   }
 
   register(model: FormGroup): Observable<any> {
@@ -37,8 +47,7 @@ export class AuthService {
         map((response: any) => {
           const user = response;
           if (user) {
-            this.currentUser.set(user);
-            localStorage.setItem('token', user.data.token);
+            this.setCurrentUser(user.data);
           }
           return user;
         })

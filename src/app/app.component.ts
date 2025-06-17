@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     if (!token) return;
     const user: User = jwtDecode(token);
     user.token = token;
-    this._authService.currentUser.set(user);
+    this._authService.setCurrentUser(user);
   }
 
   ngOnInit(): void {
