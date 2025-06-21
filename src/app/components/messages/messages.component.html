@@ -1,1 +1,108 @@
-<p>messages works!</p>
+<div class="container mt-3">
+  <div class="d-flex">
+    <div class="btn-group">
+      <button
+        class="btn btn-primary"
+        btnRadio="Unread"
+        [(ngModel)]="container"
+        (click)="loadMessages()"
+      >
+        Unread
+      </button>
+      <button
+        class="btn btn-primary"
+        btnRadio="Inbox"
+        [(ngModel)]="container"
+        (click)="loadMessages()"
+      >
+        Inbox
+      </button>
+      <button
+        class="btn btn-primary"
+        btnRadio="Outbox"
+        [(ngModel)]="container"
+        (click)="loadMessages()"
+      >
+        Outbox
+      </button>
+    </div>
+  </div>
+</div>
+
+@if (!PaginatedResults()?.items) {
+<h3>No Messages</h3>
+} @else {
+<table class="table table-hover mt-3" style="cursor: pointer">
+  <thead>
+    <tr>
+      <th style="width: 40%">Messages</th>
+      <th style="width: 20%">From / To</th>
+      <th style="width: 20%">Sent / Received</th>
+      <th style="width: 20%">Sent / Received</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (item of PaginatedResults()?.items; track $index) {
+    <tr routerLink="{{ getRoute(item) }}">
+      <td>
+        <p>{{ item.content }}</p>
+      </td>
+      <td>
+        <div>
+          <img
+            style="width: 40px; height: 40px"
+            class="rounded-5"
+            [src]="
+              container == 'Outbox'
+                ? item.recipientPhotoUrl
+                : container == 'Inbox'
+                ? item.senderPhotoUrl
+                : container == 'Unread' ? item.senderPhotoUrl : ''
+            "
+            alt="user image"
+          />
+          <strong>
+            {{
+              container == "Outbox"
+                ? item.recipientUsername
+                : item.senderUsername
+            }}
+          </strong>
+        </div>
+      </td>
+      <td>
+        <p><strong>From:</strong> {{ item.senderUsername }}</p>
+        <p><strong>To:</strong> {{ item.recipientUsername }}</p>
+      </td>
+
+      <td>
+        {{ item.messageSent }}
+      </td>
+      <td>
+        <button
+          (click)="deleteMessage(item.id)"
+          class="btn btn-danger"
+          style="margin-right: 10px"
+        >
+          <i class="fa fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+@if (PaginatedResults()?.items != null) {
+
+<div class="d-flex w-100 align-items-center justify-content-center mt-5 pt-3">
+  <div class="col-xs-12 col-12">
+    <pagination
+      class="justify-content-center"
+      [totalItems]="PaginatedResults()?.TotalCount || 0"
+      [itemsPerPage]="PaginatedResults()?.pageSize || 0"
+      (pageChanged)="pageChanged($event)"
+    ></pagination>
+  </div>
+</div>
+} }
