@@ -43,7 +43,9 @@ export class MessagesComponent implements OnInit {
     );
   }
 
-  deleteMessage(id: number) {}
+  deleteMessage(id: number) {
+    this._messageService.deleteMessage(id.toString());
+  }
 
   getRoute(message: Message) {
     this.container == 'Outbox'

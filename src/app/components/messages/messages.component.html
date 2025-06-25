@@ -58,7 +58,9 @@
                 ? item.recipientPhotoUrl
                 : container == 'Inbox'
                 ? item.senderPhotoUrl
-                : container == 'Unread' ? item.senderPhotoUrl : ''
+                : container == 'Unread'
+                ? item.senderPhotoUrl
+                : ''
             "
             alt="user image"
           />
@@ -79,7 +81,7 @@
       <td>
         {{ item.messageSent }}
       </td>
-      <td>
+      <td (click)="$event.stopPropagation()">
         <button
           (click)="deleteMessage(item.id)"
           class="btn btn-danger"

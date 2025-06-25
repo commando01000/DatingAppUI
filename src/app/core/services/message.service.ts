@@ -3,7 +3,6 @@ import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { PaginatedResult } from '../../interfaces/pagination';
 import { Message } from '../../interfaces/message';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +23,31 @@ export class MessageService {
       .subscribe({
         next: (response: any) => {
           this.PaginatedResult.set(response);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+          console.log('Request Completed');
+        },
+      });
+  }
+
+  deleteMessage(id: string) {
+    this._httpClient
+      .delete(
+        this.baseUrl + '/Messages/DeleteMessage?messageId=' + id.toString()
+      )
+      .subscribe({
+        next: () => {
+          // window.location.reload();
+          this.PaginatedResult.update((prev) => {
+            if (!prev) return null;
+            return {
+              ...prev,
+              items: prev.items?.filter((m) => m.id.toString() !== id),
+            };
+          });
         },
         error: (error) => {
           console.log(error);
