@@ -33,6 +33,16 @@ export class MessageService {
       });
   }
 
+  getMessageThread(senderId: string, recipientId: string) {
+    return this._httpClient.get<Message[]>(
+      this.baseUrl +
+        '/Messages/GetMessagesThread?SenderId=' +
+        senderId +
+        '&RecipientId=' +
+        recipientId
+    );
+  }
+
   deleteMessage(id: string) {
     this._httpClient
       .delete(

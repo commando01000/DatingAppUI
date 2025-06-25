@@ -1,17 +1,21 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { Observable } from 'rxjs';
+import { Observable, filter } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { Member } from '../../interfaces/member';
 import { PaginatedResult } from '../../interfaces/pagination';
 import { UserParams } from '../../interfaces/user-params';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MemberService {
-  constructor(private _httpClient: HttpClient) {}
+  constructor(
+    private _httpClient: HttpClient,
+    private _authService: AuthService
+  ) {}
 
   baseUrl = environment.baseUrl;
   paginatedResults = signal<PaginatedResult<Member>>(
@@ -49,8 +53,15 @@ export class MemberService {
       .get(this.baseUrl + '/Members/members?' + params)
       .subscribe({
         next: (response: any) => {
-          this.paginatedResults.set(response.data);
-          console.log(this.paginatedResults());
+          // do not show the current user
+          const paginatedResult = response.data as PaginatedResult<Member>;
+          var currentUser = this._authService.currentUser();
+          if (currentUser != null) {
+            response.items = paginatedResult?.items?.filter((m: any) => {
+              return m.id != currentUser?.Id;
+            });
+          }
+          this.paginatedResults.set(response);
         },
         error: (error) => {
           console.log(error);

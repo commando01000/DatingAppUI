@@ -1,0 +1,52 @@
+<div class="card">
+  <div class="card-body">
+    @if(messages().length === 0) {
+    <p>No messages yet</p>
+    } @else {
+    <ul class="chat list-unstyled">
+      @for (item of messages(); track item.id) {
+      <li class="left clearfix d-flex align-items-center gap-3">
+        <span class="chat-img pull-left">
+          <img
+            width="40"
+            height="40"
+            src="{{ item.senderPhotoUrl }}"
+            alt="User Avatar"
+            class="img-circle rounded-circle mb-3"
+          />
+        </span>
+        <div class="chat-body clearfix">
+          <div class="header">
+            <strong class="primary-font">
+              {{ item.senderUsername }}
+            </strong>
+          </div>
+          <p>{{ item.content }}</p>
+          <small class="text-muted">
+            <span class="fa fa-clock-o"></span>
+            {{ item.messageSent }}
+            @if (item.isRead) {
+            <span class="fa fa-check text-success"></span>
+            } @else {
+            <span class="fa fa-check"></span>
+            }
+          </small>
+        </div>
+      </li>
+      }
+    </ul>
+    }
+  </div>
+  <div class="card-footer">
+    <form>
+      <input
+        type="text"
+        class="form-control input-sm"
+        placeholder="Send a private message"
+      />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">Send</button>
+      </div>
+    </form>
+  </div>
+</div>
