@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment.development';
 import { User } from '../../interfaces/user';
 import { jwtDecode } from 'jwt-decode';
 import { LikedService } from './liked.service';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,8 @@ import { LikedService } from './liked.service';
 export class AuthService {
   constructor(
     private _httpClient: HttpClient,
-    private _likedService: LikedService
+    private _likedService: LikedService,
+    private _presenceService: PresenceService
   ) {}
 
   currentUser = signal<User | null>(null);
@@ -37,6 +39,7 @@ export class AuthService {
     decodedUser.token = user.token;
     this.currentUser.set(decodedUser);
     localStorage.setItem('token', user.token);
+    this._presenceService.createHubConnection(decodedUser);
     this._likedService.getLikeIds();
   }
 
@@ -56,6 +59,7 @@ export class AuthService {
 
   logout() {
     this.currentUser.set(null);
+    this._presenceService.stopHubConnection();
     localStorage.removeItem('token');
   }
 }
