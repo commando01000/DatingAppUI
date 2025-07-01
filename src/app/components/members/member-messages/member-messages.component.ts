@@ -1,22 +1,25 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input, OnInit, ViewChild } from '@angular/core';
 import { Message } from '../../../interfaces/message';
 import { MessageService } from '../../../core/services/message.service';
 import { PaginatedResult } from '../../../interfaces/pagination';
 import { AuthService } from '../../../core/services/auth.service';
 import { TimeagoModule } from 'ngx-timeago';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-member-messages',
-  imports: [TimeagoModule],
+  imports: [TimeagoModule, FormsModule],
   templateUrl: './member-messages.component.html',
   styleUrl: './member-messages.component.scss',
 })
 export class MemberMessagesComponent implements OnInit {
   userId = input.required<string>();
-  messages = input.required<Message[]>();
+  // messages = input.required<Message[]>();
+  messageContent: string = '';
+  @ViewChild('messageForm') messageForm!: NgForm;
 
   constructor(
-    private _messageService: MessageService,
+    public _messageService: MessageService,
     private _authService: AuthService
   ) {}
   ngOnInit(): void {
@@ -43,4 +46,12 @@ export class MemberMessagesComponent implements OnInit {
   //       },
   //     });
   // }
+
+  sendMessage() {
+    this._messageService
+      .SendMessage(this.userId(), this.messageContent)
+      .then(() => {
+        this.messageForm.reset();
+      });
+  }
 }

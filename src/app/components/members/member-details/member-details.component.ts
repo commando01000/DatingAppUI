@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MemberService } from '../../../core/services/member.service';
 import { ActivatedRoute } from '@angular/router';
 import { Member } from '../../../interfaces/member';
@@ -10,6 +10,7 @@ import { Message } from '../../../interfaces/message';
 import { MessageService } from '../../../core/services/message.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { PaginatedResult } from '../../../interfaces/pagination';
+import { PresenceService } from '../../../core/services/presence.service';
 
 @Component({
   selector: 'app-member-details',
@@ -17,7 +18,7 @@ import { PaginatedResult } from '../../../interfaces/pagination';
   templateUrl: './member-details.component.html',
   styleUrl: './member-details.component.scss',
 })
-export class MemberDetailsComponent implements OnInit {
+export class MemberDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadMemberData();
   }
@@ -26,40 +27,48 @@ export class MemberDetailsComponent implements OnInit {
     private _memberService: MemberService,
     private _messageService: MessageService,
     private _authService: AuthService,
-    private _ActivatedRoute: ActivatedRoute
+    private _ActivatedRoute: ActivatedRoute,
+    public _presenceService: PresenceService
   ) {}
+  ngOnDestroy(): void {
+    this._messageService.stopHubConnection();
+  }
 
   member: Member | undefined;
   @ViewChild('messagesTab') messagesTab: HTMLElement | undefined;
   activeTab?: TabDirective;
-  messages: Message[] = [];
+  // messages: Message[] = [];
 
   onTabActivated(data: TabDirective) {
     this.activeTab = data;
     const memberId = this._ActivatedRoute.snapshot.paramMap.get('id') || '';
     if (
       this.activeTab.heading == 'Messages' &&
-      this.messages.length === 0 &&
       this.member
     ) {
-      this._messageService
-        .getMessageThread(this._authService.currentUser()!.Id, memberId)
-        .subscribe({
-          next: (messages: any) => {
-            const myMessages = messages as PaginatedResult<Message>;
-            if (myMessages.items !== undefined) {
-              this.messages = myMessages.items;
-            } else {
-              this.messages = [];
-            }
-          },
-          error: (error) => {
-            console.log(error);
-          },
-          complete: () => {
-            console.log('Request Completed');
-          },
-        });
+      // this._messageService
+      //   .getMessageThread(this._authService.currentUser()!.Id, memberId)
+      //   .subscribe({
+      //     next: (messages: any) => {
+      //       const myMessages = messages as PaginatedResult<Message>;
+      //       if (myMessages.items !== undefined) {
+      //         this.messages = myMessages.items;
+      //       } else {
+      //         this.messages = [];
+      //       }
+      //     },
+      //     error: (error) => {
+      //       console.log(error);
+      //     },
+      //     complete: () => {
+      //       console.log('Request Completed');
+      //     },
+      //   });
+
+      const user = this._authService.currentUser()!;
+      if(user){
+        this._messageService.createHubConnection(user, this.member.id);
+      }
     }
   }
 
